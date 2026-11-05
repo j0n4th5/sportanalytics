@@ -3,178 +3,512 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SportAnalytics | Pronósticos y Análisis Deportivos Pro</title>
+    <title>SportAnalytics | Análisis y Estadísticas Deportivas</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        brand: {
-                            bg: '#0F172A',
-                            card: '#1E293B',
-                            border: '#334155',
-                            accent: '#10B981',
-                            accentHover: '#059669',
-                            text: '#F8FAFC',
-                            muted: '#94A3B8'
-                        }
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
+    <style>
+        .accordion-body {
+            display: none;
+        }
+        .accordion-body.active {
+            display: block;
+        }
+    </style>
 </head>
-<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-accent selection:text-brand-bg flex flex-col min-h-screen">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- Aviso de Juego Responsable -->
-    <div class="bg-amber-500/10 border-b border-amber-500/20 text-amber-300 text-xs py-1.5 px-4 text-center font-medium">
-        <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
-        <span>Juego Responsable: Contenido únicamente informativo. Sin garantías. (+18)</span>
+    <!-- BANNER AVISO DE RESPONSABILIDAD (Steve Krug Cap. 11: Transparencia) -->
+    <div class="bg-slate-900 border-b border-slate-800 text-xs text-slate-400 py-2.5 px-4 text-center">
+        <span class="inline-flex items-center gap-1.5 font-semibold text-amber-400">
+            <i class="fa-solid fa-shield-halved"></i> Juego Responsable:
+        </span>
+        Los análisis y datos mostrados son únicamente informativos. No garantizan resultados. Las apuestas implican riesgo (+18).
     </div>
 
-    <!-- Navegación Persistente Responsive -->
-    <header class="sticky top-0 z-50 bg-brand-bg/95 backdrop-blur border-b border-brand-border">
+    <!-- CABECERA PERSISTENTE (Navegación e Identidad) -->
+    <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <a href="#" class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-accent to-emerald-300 flex items-center justify-center shadow-lg shadow-brand-accent/20">
-                        <i class="fa-solid fa-chart-line text-brand-bg font-bold text-lg"></i>
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Logo del Sitio -->
+                <a href="#" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20">
+                        SA
                     </div>
-                    <span class="font-bold text-xl tracking-tight text-white">Sport<span class="text-brand-accent">Analytics</span></span>
+                    <div>
+                        <h1 class="text-xl font-black tracking-tight text-slate-100">Sport<span class="text-emerald-400">Analytics</span></h1>
+                        <p class="text-[10px] text-slate-400 font-medium hidden sm:block">Datos y pronósticos fundamentados</p>
+                    </div>
                 </a>
 
-                <nav class="hidden md:flex items-center gap-6">
-                    <a href="#analisis" class="text-sm font-medium text-brand-muted hover:text-white transition-colors">Mejores Análisis</a>
-                    <a href="#noticias" class="text-sm font-medium text-brand-muted hover:text-white transition-colors">Noticias</a>
-                    <a href="#agenda" class="text-sm font-medium text-brand-muted hover:text-white transition-colors">Agenda</a>
-                </nav>
+                <!-- Buscador con Autocompletado -->
+                <div class="relative flex-1 max-w-md hidden md:block">
+                    <div class="relative">
+                        <input type="text" id="searchInput" onkeyup="filtrarPorBusqueda()" placeholder="Buscar equipo, partido o liga..." 
+                            class="w-full bg-slate-800/90 text-slate-100 text-sm rounded-xl pl-10 pr-4 py-2 border border-slate-700/80 focus:outline-none focus:border-emerald-500 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                    </div>
+                </div>
 
-                <div class="flex items-center gap-3">
-                    <button class="bg-brand-accent hover:bg-brand-accentHover text-brand-bg font-semibold px-4 py-2 rounded-lg text-sm transition-all shadow-md shadow-brand-accent/10 flex items-center gap-2">
+                <!-- Enlaces Principales -->
+                <nav class="flex items-center gap-2 sm:gap-6 text-sm font-semibold">
+                    <a href="#analisis-section" class="text-slate-300 hover:text-emerald-400 transition-colors">Mejores Análisis</a>
+                    <a href="#agenda-section" class="text-slate-300 hover:text-emerald-400 transition-colors">Agenda</a>
+                    <a href="#noticias-section" class="text-slate-300 hover:text-emerald-400 transition-colors">Noticias</a>
+                    <a href="#publicar-section" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl transition-all shadow-lg shadow-emerald-500/10 flex items-center gap-2">
                         <i class="fa-solid fa-plus text-xs"></i>
                         <span>Publicar</span>
-                    </button>
-                </div>
+                    </a>
+                </nav>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="py-8 sm:py-12 bg-slate-900/50 border-b border-brand-border">
+    <!-- BARRA SUB-NAVEGACIÓN CON FILTROS (Krug Cap. 6: ¿Dónde estoy?) -->
+    <div class="bg-slate-900/60 border-b border-slate-800/80 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3 text-xs">
+            
+            <div class="flex items-center gap-2 text-slate-400">
+                <span>Inicio</span>
+                <i class="fa-solid fa-chevron-right text-[9px] text-slate-600"></i>
+                <span class="text-emerald-400 font-semibold">5 de Noviembre de 2026</span>
+            </div>
+
+            <!-- Filtros Rápidos -->
+            <div class="flex items-center gap-2" id="filterContainer">
+                <span class="text-slate-400 font-medium mr-1">Filtrar por Deporte:</span>
+                <button onclick="filtrarDeporte('Todos')" class="filter-btn active-btn bg-emerald-500 text-slate-950 px-3.5 py-1.5 rounded-lg font-bold transition-all">Todos</button>
+                <button onclick="filtrarDeporte('Fútbol')" class="filter-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-semibold transition-all">Fútbol</button>
+                <button onclick="filtrarDeporte('NBA')" class="filter-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-semibold transition-all">NBA</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SOBRIO -->
+    <section class="bg-slate-900/40 py-10 border-b border-slate-800/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-xs font-semibold mb-4">
-                    <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
-                    PLATAFORMA DE ANÁLISIS ESTADÍSTICO
-                </div>
-                <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight mb-3">
+                <span class="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-3">
+                    Plataforma de Análisis Estadístico
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight leading-snug">
                     Información clara y datos objetivos para tus decisiones deportivas
-                </h1>
-                <p class="text-sm sm:text-base text-brand-muted mb-6">
+                </h2>
+                <p class="mt-3 text-base text-slate-400 leading-relaxed">
                     Accede a análisis estructurados en una sola línea, nivel de confianza y desglose detallado para los partidos de hoy.
                 </p>
-                <div class="flex flex-wrap gap-2 text-xs sm:text-sm">
-                    <button onclick="filtrarPartidos('todos')" class="px-3.5 py-1.5 rounded-lg bg-brand-accent text-brand-bg font-semibold">Todos</button>
-                    <button onclick="filtrarPartidos('NBA')" class="px-3.5 py-1.5 rounded-lg bg-brand-card text-brand-muted hover:text-white border border-brand-border font-medium">NBA</button>
-                    <button onclick="filtrarPartidos('Futbol')" class="px-3.5 py-1.5 rounded-lg bg-brand-card text-brand-muted hover:text-white border border-brand-border font-medium">Fútbol</button>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Listado de Análisis (Mobile Optimized) -->
-    <main id="analisis" class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 w-full">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-fire text-brand-accent"></i>
-                    Análisis Destacados del Día
-                </h2>
-                <p class="text-xs sm:text-sm text-brand-muted">5 Noviembre 2026 — Datos actualizados</p>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- MEJORES ANÁLISIS (Sección Principal) -->
+        <section id="analisis-section" class="scroll-mt-24">
+            <div class="mb-6 pb-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-100 flex items-center gap-2.5">
+                        <i class="fa-solid fa-chart-line text-emerald-400"></i>
+                        Mejores Análisis y Pronósticos
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Conclusión en 1 línea, cuotas implícitas y nivel de certeza</p>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 font-medium self-start sm:self-auto">
+                    5 Encuentros Disponibles
+                </span>
             </div>
-        </div>
 
-        <div class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-2">
+            <!-- GRID DE ANÁLISIS (RENDERIZADO POR JS) -->
+            <div id="analisisGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Se llena automáticamente -->
+            </div>
+        </section>
 
-            <!-- Card 1: NBA -->
-            <article class="bg-brand-card rounded-xl border border-brand-border p-4 sm:p-5 flex flex-col justify-between hover:border-brand-accent/40 transition-all shadow-lg">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-3">
-                        <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">NBA</span>
-                        <span class="text-xs text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 20:00</span>
+        <!-- AGENDA DE PARTIDOS -->
+        <section id="agenda-section" class="scroll-mt-24">
+            <div class="mb-6 pb-4 border-b border-slate-800">
+                <h3 class="text-2xl font-bold text-slate-100 flex items-center gap-2.5">
+                    <i class="fa-regular fa-calendar-check text-emerald-400"></i>
+                    Agenda de Partidos de Hoy (5 Nov 2026)
+                </h3>
+                <p class="text-xs text-slate-400 mt-1">Horarios y accesos directos por disciplina</p>
+            </div>
+
+            <!-- AGENDA GRID (RENDERIZADO POR JS) -->
+            <div id="agendaGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Se llena automáticamente -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE NOTICIAS -->
+        <section id="noticias-section" class="scroll-mt-24">
+            <div class="mb-6 pb-4 border-b border-slate-800">
+                <h3 class="text-2xl font-bold text-slate-100 flex items-center gap-2.5">
+                    <i class="fa-regular fa-newspaper text-emerald-400"></i>
+                    Noticias y Novedades de Última Hora
+                </h3>
+                <p class="text-xs text-slate-400 mt-1">Reportes médicos, bajas confirmadas y factores tácticos</p>
+            </div>
+
+            <!-- NOTICIAS GRID (RENDERIZADO POR JS) -->
+            <div id="noticiasGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Se llena automáticamente -->
+            </div>
+        </section>
+
+        <!-- FORMULARIO DE PUBLICACIÓN -->
+        <section id="publicar-section" class="scroll-mt-24 bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8">
+            <div class="max-w-2xl">
+                <h3 class="text-xl font-bold text-slate-100 flex items-center gap-2 mb-1">
+                    <i class="fa-solid fa-pen-to-square text-emerald-400"></i>
+                    Publicar un Nuevo Análisis
+                </h3>
+                <p class="text-xs text-slate-400 mb-6">Agrega tus datos o pronóstico para compartirlo inmediatamente con la comunidad.</p>
+
+                <form id="nuevoAnalisisForm" onsubmit="agregarNuevoAnalisis(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Partido / Evento</label>
+                            <input type="text" id="formPartido" required placeholder="Ej. Boston Celtics vs Lakers" 
+                                class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Deporte</label>
+                            <select id="formDeporte" class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                                <option value="NBA">NBA</option>
+                                <option value="Fútbol">Fútbol</option>
+                                <option value="Tenis">Tenis</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Phoenix Suns vs. Orlando Magic</h3>
-
-                    <!-- Conclusión en 1 línea (Principio UX Steve Krug) -->
-                    <div class="bg-slate-900/80 rounded-lg p-3 border-l-4 border-brand-accent mb-4">
-                        <div class="text-xs text-brand-accent font-bold uppercase tracking-wider mb-1">Conclusión Directa</div>
-                        <p class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
-                            Victoria de Phoenix Suns (-3.5) aprovechando la baja ofensiva de Magic en back-to-back.
-                        </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Liga / Competición</label>
+                            <input type="text" id="formLiga" required placeholder="Ej. NBA / UEFA" 
+                                class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Cuota Sugerida</label>
+                            <input type="text" id="formCuota" required placeholder="Ej. 1.85" 
+                                class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nivel Confianza (1 a 5)</label>
+                            <select id="formConfianza" class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                                <option value="5">5/5 - Excelente</option>
+                                <option value="4" selected>4/5 - Alto</option>
+                                <option value="3">3/5 - Medio</option>
+                                <option value="2">2/5 - Moderado</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-slate-900/40 p-2.5 rounded-lg mb-4 text-brand-muted">
-                        <div>Confianza: <span class="text-white font-semibold">85%</span></div>
-                        <div>Cuota Sugerida: <span class="text-brand-accent font-semibold">1.85</span></div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Conclusión Directa (1 línea)</label>
+                        <input type="text" id="formConclusion" required placeholder="Ej. Victoria de Boston Celtics por más de 5 puntos" 
+                            class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
                     </div>
-                </div>
 
-                <div class="pt-2 border-t border-brand-border/50 flex justify-end">
-                    <button class="text-xs font-semibold text-brand-accent hover:underline flex items-center gap-1">
-                        Ver análisis estadístico <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Desarrollo y Factores de Riesgo</label>
+                        <textarea id="formDesarrollo" rows="3" required placeholder="Escribe aquí las razones clave del pronóstico..." 
+                            class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500"></textarea>
+                    </div>
+
+                    <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-lg shadow-emerald-500/20">
+                        Publicar Análisis Ahora
                     </button>
-                </div>
-            </article>
+                </form>
+            </div>
+        </section>
 
-            <!-- Card 2: UEFA Europa League -->
-            <article class="bg-brand-card rounded-xl border border-brand-border p-4 sm:p-5 flex flex-col justify-between hover:border-brand-accent/40 transition-all shadow-lg">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-3">
-                        <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">Europa League</span>
-                        <span class="text-xs text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 21:00</span>
-                    </div>
-
-                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Real Sociedad vs. Lyon</h3>
-
-                    <!-- Conclusión en 1 línea -->
-                    <div class="bg-slate-900/80 rounded-lg p-3 border-l-4 border-brand-accent mb-4">
-                        <div class="text-xs text-brand-accent font-bold uppercase tracking-wider mb-1">Conclusión Directa</div>
-                        <p class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
-                            Ambos equipos anotan: promedio combinado de 3.2 goles en los últimos 5 juegos continentales.
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-slate-900/40 p-2.5 rounded-lg mb-4 text-brand-muted">
-                        <div>Confianza: <span class="text-white font-semibold">78%</span></div>
-                        <div>Cuota Sugerida: <span class="text-brand-accent font-semibold">1.72</span></div>
-                    </div>
-                </div>
-
-                <div class="pt-2 border-t border-brand-border/50 flex justify-end">
-                    <button class="text-xs font-semibold text-brand-accent hover:underline flex items-center gap-1">
-                        Ver análisis estadístico <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                    </button>
-                </div>
-            </article>
-
-        </div>
     </main>
 
-    <!-- Footer Persistente -->
-    <footer class="bg-slate-950 border-t border-brand-border py-6 text-center text-xs text-brand-muted">
-        <div class="max-w-7xl mx-auto px-4">
-            <p class="mb-2">© 2026 SportAnalytics — Proyecto Académico de Usabilidad Web (A6U2 & A7U2).</p>
-            <p class="text-[11px] text-slate-500">Diseñado aplicando los principios de usabilidad de <em>"No me hagas pensar"</em> de Steve Krug.</p>
+    <!-- FOOTER SOBRIO -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-8 text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950 font-black">SA</div>
+                <span class="font-bold text-slate-200 text-sm">SportAnalytics</span>
+            </div>
+            <p>Plataforma diseñada aplicando principios de usabilidad UX (Steve Krug).</p>
+            <p>&copy; 2026 SportAnalytics. Todos los derechos reservados.</p>
         </div>
     </footer>
 
+    <!-- SCRIPT INLINE SINCRÓNICO CON DATOS PRECARGADOS DEL 5 DE NOVIEMBRE DE 2026 -->
     <script>
-        function filtrarPartidos(categoria) {
-            console.log("Filtro seleccionado: " + categoria);
+        // DATOS OBLIGATORIOS PRECARGADOS DEL 5/11/2026
+        const datosAnalisis = [
+            {
+                id: 1,
+                deporte: "NBA",
+                partido: "Phoenix Suns vs. Orlando Magic",
+                liga: "NBA - Temporada Regular",
+                fecha: "5 Nov 2026 - 20:00 CDMX",
+                conclusion: "Victoria de Phoenix Suns (Línea de dinero)",
+                cuota: "1.72",
+                confianza: 4,
+                desarrollo: "Phoenix llega fuerte jugando como local en el Footprint Center. La defensa perimetral de Magic suele sufrir en giras por la Conferencia Oeste frente a equipos con alto volumen de tiro exterior.",
+                riesgo: "Si la rotación interior de Orlando domina la pintura y limita las segundas oportunidades."
+            },
+            {
+                id: 2,
+                deporte: "NBA",
+                partido: "Golden State Warriors vs. Miami Heat",
+                liga: "NBA - Temporada Regular",
+                fecha: "5 Nov 2026 - 21:00 CDMX",
+                conclusion: "Altas / Over (+220.5 Puntos Totales)",
+                cuota: "1.90",
+                confianza: 3,
+                desarrollo: "Ambos equipos han acelerado el ritmo de juego en sus últimos compromisos. La eficiencia en transiciones rápidas en el Chase Center favorece un marcador abultado superando la línea habitual de puntos.",
+                riesgo: "Ritmo bajo en media cancha si Miami impone su estilo físico defensivo desde el primer cuarto."
+            },
+            {
+                id: 3,
+                deporte: "Fútbol",
+                partido: "Real Sociedad vs. Lyon",
+                liga: "UEFA Europa League",
+                fecha: "5 Nov 2026 - 18:45 CET",
+                conclusion: "Ambos Equipos Anotan (Sí)",
+                cuota: "1.80",
+                confianza: 4,
+                desarrollo: "La Real Sociedad suele ser muy agresiva en Anoeta, pero genera espacios en transición. Lyon llega con una racha goleadora positiva como visitante en torneos europeos.",
+                riesgo: "Falta de efectividad de las delanteras en el primer tiempo."
+            },
+            {
+                id: 4,
+                deporte: "Fútbol",
+                partido: "AC Milan vs. Ferencváros",
+                liga: "UEFA Europa League",
+                fecha: "5 Nov 2026 - 18:45 CET",
+                conclusion: "AC Milan -1.5 Hándicap Asiático",
+                cuota: "1.85",
+                confianza: 5,
+                desarrollo: "Diferencia de jerarquía marcada. El equipo Rossonero necesita consolidar su clasificación en casa y suele presionar arriba provocando salidas erróneas del rival.",
+                riesgo: "Rotaciones excesivas en el 11 titular del equipo local pensando en la liga doméstica."
+            },
+            {
+                id: 5,
+                deporte: "Fútbol",
+                partido: "AZ Alkmaar vs. Juventus",
+                liga: "UEFA Europa League",
+                fecha: "5 Nov 2026 - 21:00 CET",
+                conclusion: "Victoria de Juventus / Menos de 3.5 Goles totales",
+                cuota: "2.10",
+                confianza: 3,
+                desarrollo: "La Juventus acostumbra controlar los tiempos de juego en sus salidas europeas, priorizando el orden defensivo sobre la posesión desmedida.",
+                riesgo: "Un gol tempranero del equipo neerlandés que rompa el esquema defensivo visitante."
+            }
+        ];
+
+        const datosNoticias = [
+            {
+                titulo: "Reporte de Lesiones en la NBA: Bajas Clave para la Jornada",
+                categoria: "NBA",
+                fecha: "5 Nov 2026",
+                resumen: "Conoce las alineaciones confirmadas y jugadores en duda para los partidos de esta noche."
+            },
+            {
+                titulo: "Previa UEFA Europa League: Choques Decisivos en la Fase de Grupos",
+                categoria: "Fútbol",
+                fecha: "5 Nov 2026",
+                resumen: "Análisis táctico de la jornada europea donde AC Milan y Juventus buscan asegurar su pase."
+            },
+            {
+                titulo: "Impacto del Clima en Anoeta: Terreno Rápido para el Real Sociedad vs Lyon",
+                categoria: "Fútbol",
+                fecha: "5 Nov 2026",
+                resumen: "Las lluvias recientes favorecerán un juego directo y transiciones veloces entre ambos conjuntos."
+            }
+        ];
+
+        // RENDERIZADO INMEDIATO Y ESTÁTICO
+        function renderizarTodo(lista = datosAnalisis) {
+            const grid = document.getElementById('analisisGrid');
+            const agendaGrid = document.getElementById('agendaGrid');
+            const noticiasGrid = document.getElementById('noticiasGrid');
+
+            grid.innerHTML = '';
+            agendaGrid.innerHTML = '';
+            noticiasGrid.innerHTML = '';
+
+            // Renderizar Análisis
+            lista.forEach(item => {
+                let estrellas = '';
+                for(let i = 0; i < 5; i++) {
+                    estrellas += i < item.confianza 
+                        ? '<i class="fa-solid fa-star text-amber-400"></i>' 
+                        : '<i class="fa-regular fa-star text-slate-600"></i>';
+                }
+
+                const badgeColor = item.deporte === 'NBA' 
+                    ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' 
+                    : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+
+                grid.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all flex flex-col justify-between">
+                        <div>
+                            <!-- Header de la tarjeta -->
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="px-2.5 py-1 rounded-md text-[11px] font-bold border ${badgeColor}">
+                                    ${item.deporte} • ${item.liga}
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium">
+                                    <i class="fa-regular fa-clock mr-1"></i>${item.fecha}
+                                </span>
+                            </div>
+
+                            <!-- Título del Encuentro -->
+                            <h4 class="text-lg font-bold text-slate-100 mb-2">${item.partido}</h4>
+
+                            <!-- Resumen Ejecutiva (1 línea - Krug) -->
+                            <div class="bg-slate-800/90 border border-slate-700/60 rounded-xl p-3 mb-4">
+                                <div class="text-[11px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Pronóstico Recomendado</div>
+                                <div class="text-sm font-bold text-emerald-400">${item.conclusion}</div>
+                            </div>
+
+                            <!-- Métricas Rápidas -->
+                            <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
+                                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                                    <span class="text-slate-400 block mb-0.5">Cuota Sugerida:</span>
+                                    <span class="font-extrabold text-slate-100 text-sm">${item.cuota}</span>
+                                </div>
+                                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                                    <span class="text-slate-400 block mb-0.5">Confianza:</span>
+                                    <div class="flex items-center gap-1 text-xs">${estrellas}</div>
+                                </div>
+                            </div>
+
+                            <!-- Acordeón para Detalle -->
+                            <div id="body-${item.id}" class="accordion-body text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800 mb-3">
+                                <p><strong>Análisis:</strong> ${item.desarrollo}</p>
+                                <p class="text-amber-400/90"><strong>Factor de Riesgo:</strong> ${item.riesgo}</p>
+                            </div>
+                        </div>
+
+                        <button onclick="toggleAccordion(${item.id})" class="w-full text-center text-xs font-bold text-slate-400 hover:text-emerald-400 py-2 bg-slate-800/40 hover:bg-slate-800 rounded-xl transition-colors border border-slate-800 flex items-center justify-center gap-2">
+                            <span>Ver Análisis Completo</span>
+                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+
+                // Renderizar Agenda
+                agendaGrid.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">${item.deporte}</span>
+                            <h5 class="text-xs font-bold text-slate-100 mt-0.5">${item.partido}</h5>
+                            <span class="text-[11px] text-slate-400">${item.fecha}</span>
+                        </div>
+                        <a href="#analisis-section" class="text-xs bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-300 font-bold px-3 py-2 rounded-lg transition-colors border border-slate-700">
+                            Ver
+                        </a>
+                    </div>
+                `;
+            });
+
+            // Renderizar Noticias
+            datosNoticias.forEach(noticia => {
+                noticiasGrid.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                                <span class="text-emerald-400 font-semibold">${noticia.categoria}</span>
+                                <span>${noticia.fecha}</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-100 mb-2 leading-snug">${noticia.titulo}</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">${noticia.resumen}</p>
+                        </div>
+                        <span class="inline-block mt-4 text-xs font-semibold text-emerald-400 cursor-pointer hover:underline">Leer más &rarr;</span>
+                    </div>
+                `;
+            });
         }
+
+        // CONTROL DE ACORDEÓN
+        function toggleAccordion(id) {
+            const el = document.getElementById(`body-${id}`);
+            if (el.classList.contains('active')) {
+                el.classList.remove('active');
+            } else {
+                el.classList.add('active');
+            }
+        }
+
+        // FILTRAR POR BOTONES DE DEPORTE
+        function filtrarDeporte(deporte) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-500', 'text-slate-950', 'active-btn');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+
+            event.target.classList.remove('bg-slate-800', 'text-slate-300');
+            event.target.classList.add('bg-emerald-500', 'text-slate-950', 'active-btn');
+
+            if (deporte === 'Todos') {
+                renderizarTodo(datosAnalisis);
+            } else {
+                const filtrados = datosAnalisis.filter(a => a.deporte === deporte);
+                renderizarTodo(filtrados);
+            }
+        }
+
+        // BUSCADOR EN TIEMPO REAL
+        function filtrarPorBusqueda() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtrados = datosAnalisis.filter(a => 
+                a.partido.toLowerCase().includes(query) || 
+                a.deporte.toLowerCase().includes(query) ||
+                a.liga.toLowerCase().includes(query)
+            );
+            renderizarTodo(filtrados);
+        }
+
+        // AGREGAR NUEVO ANÁLISIS DINÁMICAMENTE DESDE EL FORMULARIO
+        function agregarNuevoAnalisis(e) {
+            e.preventDefault();
+            const nuevo = {
+                id: Date.now(),
+                deporte: document.getElementById('formDeporte').value,
+                partido: document.getElementById('formPartido').value,
+                liga: document.getElementById('formLiga').value,
+                fecha: "5 Nov 2026 - Reciente",
+                conclusion: document.getElementById('formConclusion').value,
+                cuota: document.getElementById('formCuota').value,
+                confianza: parseInt(document.getElementById('formConfianza').value),
+                desarrollo: document.getElementById('formDesarrollo').value,
+                riesgo: "Evaluado por el usuario al publicar."
+            };
+
+            datosAnalisis.unshift(nuevo);
+            renderizarTodo(datosAnalisis);
+            document.getElementById('nuevoAnalisisForm').reset();
+            window.location.hash = '#analisis-section';
+        }
+
+        // EJECUCIÓN INMEDIATA AL CARGAR EL DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarTodo();
+        });
     </script>
 </body>
 </html>
