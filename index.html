@@ -12,13 +12,11 @@
                 extend: {
                     colors: {
                         brand: {
-                            bg: '#090514',          /* Negro profundo */
-                            card: '#150D2A',        /* Morado muy oscuro */
-                            border: '#2A1B4E',      /* Borde morado sutil */
-                            purple: '#8B5CF6',      /* Morado vibrante */
-                            purpleHover: '#7C3AED',
-                            green: '#10B981',       /* Verde esmeralda */
-                            greenHover: '#059669',
+                            bg: '#0F172A',
+                            card: '#1E293B',
+                            border: '#334155',
+                            accent: '#10B981',
+                            accentHover: '#059669',
                             text: '#F8FAFC',
                             muted: '#94A3B8'
                         }
@@ -28,36 +26,33 @@
         }
     </script>
 </head>
-<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-green selection:text-brand-bg flex flex-col min-h-screen">
+<body class="bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-accent selection:text-brand-bg flex flex-col min-h-screen">
 
-    <!-- Aviso de Juego Responsable (Principio UX: Claridad al Inicio) -->
-    <div class="bg-purple-950/70 border-b border-brand-border text-purple-200 text-xs py-2 px-4 text-center font-medium">
-        <i class="fa-solid fa-triangle-exclamation mr-1.5 text-brand-green"></i>
-        <span>Juego Responsable: Contenido únicamente informativo. Las apuestas implican riesgo (+18).</span>
+    <!-- Aviso de Juego Responsable -->
+    <div class="bg-amber-500/10 border-b border-amber-500/20 text-amber-300 text-xs py-1.5 px-4 text-center font-medium">
+        <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
+        <span>Juego Responsable: Contenido únicamente informativo. Sin garantías. (+18)</span>
     </div>
 
-    <!-- Navegación Persistente Mobile-First -->
+    <!-- Navegación Persistente Responsive -->
     <header class="sticky top-0 z-50 bg-brand-bg/95 backdrop-blur border-b border-brand-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <a href="#" class="flex items-center gap-2">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-green flex items-center justify-center shadow-lg shadow-brand-purple/20">
-                        <i class="fa-solid fa-chart-line text-white font-bold text-base"></i>
+                <a href="#" class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-accent to-emerald-300 flex items-center justify-center shadow-lg shadow-brand-accent/20">
+                        <i class="fa-solid fa-chart-line text-brand-bg font-bold text-lg"></i>
                     </div>
-                    <span class="font-bold text-lg sm:text-xl tracking-tight text-white">Sport<span class="text-brand-green">Analytics</span></span>
+                    <span class="font-bold text-xl tracking-tight text-white">Sport<span class="text-brand-accent">Analytics</span></span>
                 </a>
 
-                <!-- Navegación Escritorio -->
                 <nav class="hidden md:flex items-center gap-6">
                     <a href="#analisis" class="text-sm font-medium text-brand-muted hover:text-white transition-colors">Mejores Análisis</a>
                     <a href="#noticias" class="text-sm font-medium text-brand-muted hover:text-white transition-colors">Noticias</a>
-                    <a href="#agenda" class="text-sm font-medium text-brand-muted hover:text-white transition-colors">Agenda de Hoy</a>
+                    <a href="#agenda" class="text-sm font-medium text-brand-muted hover:text-white transition-colors">Agenda</a>
                 </nav>
 
-                <!-- Botón de Publicación -->
-                <div class="flex items-center gap-2">
-                    <button class="bg-brand-green hover:bg-brand-greenHover text-brand-bg font-bold px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm transition-all shadow-md shadow-brand-green/20 flex items-center gap-1.5">
+                <div class="flex items-center gap-3">
+                    <button class="bg-brand-accent hover:bg-brand-accentHover text-brand-bg font-semibold px-4 py-2 rounded-lg text-sm transition-all shadow-md shadow-brand-accent/10 flex items-center gap-2">
                         <i class="fa-solid fa-plus text-xs"></i>
                         <span>Publicar</span>
                     </button>
@@ -66,319 +61,119 @@
         </div>
     </header>
 
-    <!-- Hero Section Móvil Optimizado con Buscador -->
-    <section class="py-6 sm:py-10 bg-gradient-to-b from-brand-card/60 to-brand-bg border-b border-brand-border">
+    <!-- Hero Section -->
+    <section class="py-8 sm:py-12 bg-slate-900/50 border-b border-brand-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/20 border border-brand-purple/30 text-purple-300 text-xs font-semibold mb-3">
-                    <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-xs font-semibold mb-4">
+                    <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
                     PLATAFORMA DE ANÁLISIS ESTADÍSTICO
                 </div>
-                <h1 class="text-xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
+                <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight mb-3">
                     Información clara y datos objetivos para tus decisiones deportivas
                 </h1>
-                <p class="text-xs sm:text-sm text-brand-muted mb-4">
-                    Conclusión directa en 1 línea, nivel de certeza y desglose detallado para los partidos de hoy.
+                <p class="text-sm sm:text-base text-brand-muted mb-6">
+                    Accede a análisis estructurados en una sola línea, nivel de confianza y desglose detallado para los partidos de hoy.
                 </p>
-
-                <!-- Buscador Interactivo -->
-                <div class="relative mb-4">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-brand-muted">
-                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                    </div>
-                    <input type="text" id="input-buscar" onkeyup="buscarPartidos()" placeholder="Buscar equipo o competición (ej. Suns, Milan, NBA)..." class="w-full pl-9 pr-4 py-2 bg-brand-card/80 border border-brand-border rounded-xl text-xs sm:text-sm text-white placeholder-brand-muted focus:outline-none focus:border-brand-purple transition-all">
-                </div>
-
-                <!-- Filtros Rápidos -->
-                <div class="flex flex-wrap gap-2 text-xs">
-                    <button onclick="filtrarDeporte('todos')" class="px-3 py-1.5 rounded-lg bg-brand-purple text-white font-semibold shadow-sm">Todos</button>
-                    <button onclick="filtrarDeporte('NBA')" class="px-3 py-1.5 rounded-lg bg-brand-card text-brand-muted hover:text-white border border-brand-border font-medium">NBA</button>
-                    <button onclick="filtrarDeporte('Futbol')" class="px-3 py-1.5 rounded-lg bg-brand-card text-brand-muted hover:text-white border border-brand-border font-medium">Fútbol</button>
+                <div class="flex flex-wrap gap-2 text-xs sm:text-sm">
+                    <button onclick="filtrarPartidos('todos')" class="px-3.5 py-1.5 rounded-lg bg-brand-accent text-brand-bg font-semibold">Todos</button>
+                    <button onclick="filtrarPartidos('NBA')" class="px-3.5 py-1.5 rounded-lg bg-brand-card text-brand-muted hover:text-white border border-brand-border font-medium">NBA</button>
+                    <button onclick="filtrarPartidos('Futbol')" class="px-3.5 py-1.5 rounded-lg bg-brand-card text-brand-muted hover:text-white border border-brand-border font-medium">Fútbol</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content: Análisis y Pronósticos -->
-    <main id="analisis" class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 w-full">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-5">
+    <!-- Listado de Análisis (Mobile Optimized) -->
+    <main id="analisis" class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 w-full">
+        <div class="flex items-center justify-between mb-6">
             <div>
-                <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-bolt text-brand-green"></i>
-                    Mejores Análisis y Pronósticos
+                <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-brand-accent"></i>
+                    Análisis Destacados del Día
                 </h2>
-                <p class="text-xs text-brand-muted">Conclusión en 1 línea — Partidos activos al 05 Noviembre 2026</p>
+                <p class="text-xs sm:text-sm text-brand-muted">5 Noviembre 2026 — Datos actualizados</p>
             </div>
         </div>
 
-        <!-- Mensaje cuando se ocultan todos los partidos -->
-        <div id="no-partidos-msg" class="hidden text-center py-12 bg-brand-card/40 rounded-xl border border-brand-border p-6">
-            <i class="fa-regular fa-calendar-xmark text-4xl text-brand-purple mb-3"></i>
-            <h3 class="text-base font-bold text-white">No hay análisis disponibles para este filtro</h3>
-            <p class="text-xs text-brand-muted mt-1">Los partidos pasados se ocultan automáticamente para mantener la cartelera al día.</p>
-        </div>
+        <div class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-2">
 
-        <!-- Grilla de partidos activos -->
-        <div id="partidos-container" class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-2">
-
-            <!-- Partido 1: NBA -->
-            <article class="partido-card bg-brand-card rounded-xl border border-brand-border p-4 flex flex-col justify-between hover:border-brand-purple transition-all shadow-md" data-fecha="2026-11-05T23:59:59" data-deporte="NBA">
+            <!-- Card 1: NBA -->
+            <article class="bg-brand-card rounded-xl border border-brand-border p-4 sm:p-5 flex flex-col justify-between hover:border-brand-accent/40 transition-all shadow-lg">
                 <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-500/30">NBA</span>
-                        <span class="text-[11px] text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 20:00</span>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">NBA</span>
+                        <span class="text-xs text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 20:00</span>
                     </div>
 
-                    <h3 class="text-base font-bold text-white mb-2">Phoenix Suns vs. Orlando Magic</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Phoenix Suns vs. Orlando Magic</h3>
 
-                    <!-- Conclusión Directa en 1 Línea (Krug UX) -->
-                    <div class="bg-brand-bg/80 rounded-lg p-3 border-l-4 border-brand-green mb-3">
-                        <div class="text-[10px] text-brand-green font-bold uppercase tracking-wider mb-0.5">Conclusión Directa</div>
-                        <p class="text-xs text-slate-200 font-medium leading-relaxed">
+                    <!-- Conclusión en 1 línea (Principio UX Steve Krug) -->
+                    <div class="bg-slate-900/80 rounded-lg p-3 border-l-4 border-brand-accent mb-4">
+                        <div class="text-xs text-brand-accent font-bold uppercase tracking-wider mb-1">Conclusión Directa</div>
+                        <p class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
                             Victoria de Phoenix Suns (-3.5) aprovechando la baja ofensiva de Magic en back-to-back.
                         </p>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-brand-bg/40 p-2 rounded-lg mb-3 text-brand-muted">
-                        <div>Certeza: <span class="text-white font-semibold">85%</span></div>
-                        <div>Cuota: <span class="text-brand-green font-semibold">1.85</span></div>
+                    <div class="grid grid-cols-2 gap-2 text-xs bg-slate-900/40 p-2.5 rounded-lg mb-4 text-brand-muted">
+                        <div>Confianza: <span class="text-white font-semibold">85%</span></div>
+                        <div>Cuota Sugerida: <span class="text-brand-accent font-semibold">1.85</span></div>
                     </div>
                 </div>
 
-                <div class="pt-2 border-t border-brand-border/60 flex justify-end">
-                    <button class="text-xs font-semibold text-brand-purple hover:text-purple-300 flex items-center gap-1">
-                        Ver análisis completo <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                <div class="pt-2 border-t border-brand-border/50 flex justify-end">
+                    <button class="text-xs font-semibold text-brand-accent hover:underline flex items-center gap-1">
+                        Ver análisis estadístico <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </button>
                 </div>
             </article>
 
-            <!-- Partido 2: NBA -->
-            <article class="partido-card bg-brand-card rounded-xl border border-brand-border p-4 flex flex-col justify-between hover:border-brand-purple transition-all shadow-md" data-fecha="2026-11-05T23:59:59" data-deporte="NBA">
+            <!-- Card 2: UEFA Europa League -->
+            <article class="bg-brand-card rounded-xl border border-brand-border p-4 sm:p-5 flex flex-col justify-between hover:border-brand-accent/40 transition-all shadow-lg">
                 <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-500/30">NBA</span>
-                        <span class="text-[11px] text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 22:30</span>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">Europa League</span>
+                        <span class="text-xs text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 21:00</span>
                     </div>
 
-                    <h3 class="text-base font-bold text-white mb-2">Miami Heat vs. Golden State Warriors</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-white mb-2">Real Sociedad vs. Lyon</h3>
 
-                    <div class="bg-brand-bg/80 rounded-lg p-3 border-l-4 border-brand-green mb-3">
-                        <div class="text-[10px] text-brand-green font-bold uppercase tracking-wider mb-0.5">Conclusión Directa</div>
-                        <p class="text-xs text-slate-200 font-medium leading-relaxed">
-                            Más de 224.5 puntos totales sostenido por el ritmo rápido y efectividad de 3 puntos de Warriors.
+                    <!-- Conclusión en 1 línea -->
+                    <div class="bg-slate-900/80 rounded-lg p-3 border-l-4 border-brand-accent mb-4">
+                        <div class="text-xs text-brand-accent font-bold uppercase tracking-wider mb-1">Conclusión Directa</div>
+                        <p class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
+                            Ambos equipos anotan: promedio combinado de 3.2 goles en los últimos 5 juegos continentales.
                         </p>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-brand-bg/40 p-2 rounded-lg mb-3 text-brand-muted">
-                        <div>Certeza: <span class="text-white font-semibold">81%</span></div>
-                        <div>Cuota: <span class="text-brand-green font-semibold">1.90</span></div>
+                    <div class="grid grid-cols-2 gap-2 text-xs bg-slate-900/40 p-2.5 rounded-lg mb-4 text-brand-muted">
+                        <div>Confianza: <span class="text-white font-semibold">78%</span></div>
+                        <div>Cuota Sugerida: <span class="text-brand-accent font-semibold">1.72</span></div>
                     </div>
                 </div>
 
-                <div class="pt-2 border-t border-brand-border/60 flex justify-end">
-                    <button class="text-xs font-semibold text-brand-purple hover:text-purple-300 flex items-center gap-1">
-                        Ver análisis completo <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </button>
-                </div>
-            </article>
-
-            <!-- Partido 3: Fútbol Europa League -->
-            <article class="partido-card bg-brand-card rounded-xl border border-brand-border p-4 flex flex-col justify-between hover:border-brand-purple transition-all shadow-md" data-fecha="2026-11-05T23:59:59" data-deporte="Futbol">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-brand-green border border-emerald-500/30">Europa League</span>
-                        <span class="text-[11px] text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 21:00</span>
-                    </div>
-
-                    <h3 class="text-base font-bold text-white mb-2">Real Sociedad vs. Lyon</h3>
-
-                    <div class="bg-brand-bg/80 rounded-lg p-3 border-l-4 border-brand-green mb-3">
-                        <div class="text-[10px] text-brand-green font-bold uppercase tracking-wider mb-0.5">Conclusión Directa</div>
-                        <p class="text-xs text-slate-200 font-medium leading-relaxed">
-                            Ambos equipos anotan: promedio combinado de 3.2 goles en los últimos 5 partidos europeos.
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-brand-bg/40 p-2 rounded-lg mb-3 text-brand-muted">
-                        <div>Certeza: <span class="text-white font-semibold">78%</span></div>
-                        <div>Cuota: <span class="text-brand-green font-semibold">1.72</span></div>
-                    </div>
-                </div>
-
-                <div class="pt-2 border-t border-brand-border/60 flex justify-end">
-                    <button class="text-xs font-semibold text-brand-purple hover:text-purple-300 flex items-center gap-1">
-                        Ver análisis completo <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </button>
-                </div>
-            </article>
-
-            <!-- Partido 4: Fútbol Europa League -->
-            <article class="partido-card bg-brand-card rounded-xl border border-brand-border p-4 flex flex-col justify-between hover:border-brand-purple transition-all shadow-md" data-fecha="2026-11-05T23:59:59" data-deporte="Futbol">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-brand-green border border-emerald-500/30">Europa League</span>
-                        <span class="text-[11px] text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 18:45</span>
-                    </div>
-
-                    <h3 class="text-base font-bold text-white mb-2">AC Milan vs. Ferencváros</h3>
-
-                    <div class="bg-brand-bg/80 rounded-lg p-3 border-l-4 border-brand-green mb-3">
-                        <div class="text-[10px] text-brand-green font-bold uppercase tracking-wider mb-0.5">Conclusión Directa</div>
-                        <p class="text-xs text-slate-200 font-medium leading-relaxed">
-                            Victoria de AC Milan al descanso y final respaldado por su racha invicta en San Siro.
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-brand-bg/40 p-2 rounded-lg mb-3 text-brand-muted">
-                        <div>Certeza: <span class="text-white font-semibold">88%</span></div>
-                        <div>Cuota: <span class="text-brand-green font-semibold">1.60</span></div>
-                    </div>
-                </div>
-
-                <div class="pt-2 border-t border-brand-border/60 flex justify-end">
-                    <button class="text-xs font-semibold text-brand-purple hover:text-purple-300 flex items-center gap-1">
-                        Ver análisis completo <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </button>
-                </div>
-            </article>
-
-            <!-- Partido 5: Fútbol Europa League -->
-            <article class="partido-card bg-brand-card rounded-xl border border-brand-border p-4 flex flex-col justify-between hover:border-brand-purple transition-all shadow-md" data-fecha="2026-11-05T23:59:59" data-deporte="Futbol">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-brand-green border border-emerald-500/30">Europa League</span>
-                        <span class="text-[11px] text-brand-muted"><i class="fa-regular fa-clock mr-1"></i>05 Nov 2026 - 21:00</span>
-                    </div>
-
-                    <h3 class="text-base font-bold text-white mb-2">AZ Alkmaar vs. Juventus</h3>
-
-                    <div class="bg-brand-bg/80 rounded-lg p-3 border-l-4 border-brand-green mb-3">
-                        <div class="text-[10px] text-brand-green font-bold uppercase tracking-wider mb-0.5">Conclusión Directa</div>
-                        <p class="text-xs text-slate-200 font-medium leading-relaxed">
-                            Menos de 2.5 goles considerando el esquema defensivo de Juventus como visitante.
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-brand-bg/40 p-2 rounded-lg mb-3 text-brand-muted">
-                        <div>Certeza: <span class="text-white font-semibold">75%</span></div>
-                        <div>Cuota: <span class="text-brand-green font-semibold">1.80</span></div>
-                    </div>
-                </div>
-
-                <div class="pt-2 border-t border-brand-border/60 flex justify-end">
-                    <button class="text-xs font-semibold text-brand-purple hover:text-purple-300 flex items-center gap-1">
-                        Ver análisis completo <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                <div class="pt-2 border-t border-brand-border/50 flex justify-end">
+                    <button class="text-xs font-semibold text-brand-accent hover:underline flex items-center gap-1">
+                        Ver análisis estadístico <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </button>
                 </div>
             </article>
 
         </div>
-
-        <!-- Sección de Noticias Deportivas -->
-        <section id="noticias" class="mt-12 pt-8 border-t border-brand-border">
-            <h2 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-regular fa-newspaper text-brand-purple"></i>
-                Últimas Noticias Informativas
-            </h2>
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div class="bg-brand-card/70 p-4 rounded-xl border border-brand-border">
-                    <span class="text-[10px] text-brand-green font-bold uppercase">NBA Update</span>
-                    <h4 class="text-sm font-bold text-white mt-1 mb-1">Bajas relevantes confirmadas para la jornada de hoy</h4>
-                    <p class="text-xs text-brand-muted">Las rotaciones de última hora ajustan las cuotas en los duelos de la Conferencia Este.</p>
-                </div>
-                <div class="bg-brand-card/70 p-4 rounded-xl border border-brand-border">
-                    <span class="text-[10px] text-brand-purple font-bold uppercase">UEFA Europa League</span>
-                    <h4 class="text-sm font-bold text-white mt-1 mb-1">Previa táctica: San Siro decide el liderazgo de grupo</h4>
-                    <p class="text-xs text-brand-muted">Análisis de rendimiento defensivo y posesión de balón antes del saque inicial.</p>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Footer Persistente -->
-    <footer class="bg-brand-bg border-t border-brand-border py-6 text-center text-xs text-brand-muted">
+    <footer class="bg-slate-950 border-t border-brand-border py-6 text-center text-xs text-brand-muted">
         <div class="max-w-7xl mx-auto px-4">
-            <p class="mb-1 text-slate-400">© 2026 SportAnalytics — Proyecto Académico de Usabilidad Web (A6U2 & A7U2)</p>
-            <p class="text-[11px] text-brand-muted">Diseñado aplicando los principios de Steve Krug | Enfoque Mobile-First</p>
+            <p class="mb-2">© 2026 SportAnalytics — Proyecto Académico de Usabilidad Web (A6U2 & A7U2).</p>
+            <p class="text-[11px] text-slate-500">Diseñado aplicando los principios de usabilidad de <em>"No me hagas pensar"</em> de Steve Krug.</p>
         </div>
     </footer>
 
-    <!-- Lógica de Ocultamiento por Fecha y Búsqueda -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const ahora = new Date();
-            const tarjetas = document.querySelectorAll('.partido-card');
-            let visibles = 0;
-
-            tarjetas.forEach(card => {
-                const fechaLimiteStr = card.getAttribute('data-fecha');
-                if (fechaLimiteStr) {
-                    const fechaLimite = new Date(fechaLimiteStr);
-                    // Ocultar si la fecha actual ya superó el horario límite
-                    if (ahora > fechaLimite) {
-                        card.style.display = 'none';
-                    } else {
-                        visibles++;
-                    }
-                } else {
-                    visibles++;
-                }
-            });
-
-            if (visibles === 0) {
-                document.getElementById('no-partidos-msg').classList.remove('hidden');
-            }
-        });
-
-        function filtrarDeporte(deporte) {
-            const tarjetas = document.querySelectorAll('.partido-card');
-            const ahora = new Date();
-            let vis = 0;
-
-            tarjetas.forEach(card => {
-                const fechaLimite = new Date(card.getAttribute('data-fecha'));
-                const dep = card.getAttribute('data-deporte');
-                
-                const yaPaso = ahora > fechaLimite;
-                const coincideDeporte = (deporte === 'todos' || dep === deporte);
-
-                if (!yaPaso && coincideDeporte) {
-                    card.style.display = 'flex';
-                    vis++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            const noMsg = document.getElementById('no-partidos-msg');
-            if (vis === 0) {
-                noMsg.classList.remove('hidden');
-            } else {
-                noMsg.classList.add('hidden');
-            }
-        }
-
-        function buscarPartidos() {
-            const query = document.getElementById('input-buscar').value.toLowerCase();
-            const tarjetas = document.querySelectorAll('.partido-card');
-            let vis = 0;
-
-            tarjetas.forEach(card => {
-                const texto = card.innerText.toLowerCase();
-                if (texto.includes(query)) {
-                    card.style.display = 'flex';
-                    vis++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            const noMsg = document.getElementById('no-partidos-msg');
-            if (vis === 0) {
-                noMsg.classList.remove('hidden');
-            } else {
-                noMsg.classList.add('hidden');
-            }
+        function filtrarPartidos(categoria) {
+            console.log("Filtro seleccionado: " + categoria);
         }
     </script>
 </body>
