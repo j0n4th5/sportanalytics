@@ -33,30 +33,30 @@
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
 
     <!-- BANNER AVISO DE RESPONSABILIDAD (Steve Krug Cap. 11: Transparencia) -->
-    <div class="bg-slate-900 border-b border-slate-800 text-xs text-slate-400 py-2.5 px-4 text-center">
+    <div class="bg-slate-900 border-b border-slate-800 text-[11px] sm:text-xs text-slate-400 py-2 px-3 sm:py-2.5 sm:px-4 text-center">
         <span class="inline-flex items-center gap-1.5 font-semibold text-amber-400">
             <i class="fa-solid fa-shield-halved"></i> Juego Responsable:
         </span>
-        Los análisis y datos mostrados son únicamente informativos. No garantizan resultados. Las apuestas implican riesgo (+18).
+        Los análisis y datos mostrados son únicamente informativos. No garantizan resultados (+18).
     </div>
 
-    <!-- CABECERA PERSISTENTE (Navegación e Identidad) -->
+    <!-- CABECERA PERSISTENTE (Navegación e Identidad Responsive) -->
     <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20 gap-4">
+            <div class="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
                 
                 <!-- Logo del Sitio -->
-                <a href="#" class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20">
+                <a href="#" class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-slate-950 font-black text-base sm:text-xl shadow-lg shadow-emerald-500/20">
                         SA
                     </div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tight text-slate-100">Sport<span class="text-emerald-400">Analytics</span></h1>
+                        <h1 class="text-base sm:text-xl font-black tracking-tight text-slate-100">Sport<span class="text-emerald-400">Analytics</span></h1>
                         <p class="text-[10px] text-slate-400 font-medium hidden sm:block">Datos y pronósticos fundamentados</p>
                     </div>
                 </a>
 
-                <!-- Buscador con Autocompletado -->
+                <!-- Buscador con Autocompletado (Visible en Tablet/Desktop) -->
                 <div class="relative flex-1 max-w-md hidden md:block">
                     <div class="relative">
                         <input type="text" id="searchInput" onkeyup="filtrarPorBusqueda()" placeholder="Buscar equipo, partido o liga..." 
@@ -66,12 +66,12 @@
                 </div>
 
                 <!-- Enlaces Principales -->
-                <nav class="flex items-center gap-2 sm:gap-6 text-sm font-semibold">
-                    <a href="#analisis-section" class="text-slate-300 hover:text-emerald-400 transition-colors">Mejores Análisis</a>
-                    <a href="#agenda-section" class="text-slate-300 hover:text-emerald-400 transition-colors">Agenda</a>
-                    <a href="#noticias-section" class="text-slate-300 hover:text-emerald-400 transition-colors">Noticias</a>
-                    <a href="#publicar-section" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl transition-all shadow-lg shadow-emerald-500/10 flex items-center gap-2">
-                        <i class="fa-solid fa-plus text-xs"></i>
+                <nav class="flex items-center gap-2 sm:gap-6 text-xs sm:text-sm font-semibold">
+                    <a href="#analisis-section" class="hidden sm:inline text-slate-300 hover:text-emerald-400 transition-colors">Análisis</a>
+                    <a href="#agenda-section" class="hidden sm:inline text-slate-300 hover:text-emerald-400 transition-colors">Agenda</a>
+                    <a href="#noticias-section" class="hidden sm:inline text-slate-300 hover:text-emerald-400 transition-colors">Noticias</a>
+                    <a href="#publicar-section" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl transition-all shadow-lg shadow-emerald-500/10 flex items-center gap-1.5 text-xs sm:text-sm">
+                        <i class="fa-solid fa-plus text-[10px] sm:text-xs"></i>
                         <span>Publicar</span>
                     </a>
                 </nav>
@@ -80,8 +80,8 @@
     </header>
 
     <!-- BARRA SUB-NAVEGACIÓN CON FILTROS (Krug Cap. 6: ¿Dónde estoy?) -->
-    <div class="bg-slate-900/60 border-b border-slate-800/80 py-3">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3 text-xs">
+    <div class="bg-slate-900/60 border-b border-slate-800/80 py-2.5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             
             <div class="flex items-center gap-2 text-slate-400">
                 <span>Inicio</span>
@@ -89,27 +89,34 @@
                 <span class="text-emerald-400 font-semibold">5 de Noviembre de 2026</span>
             </div>
 
+            <!-- Buscador Móvil -->
+            <div class="relative w-full md:hidden">
+                <input type="text" id="searchInputMobile" onkeyup="filtrarPorBusquedaMovil()" placeholder="Buscar equipo o competición..." 
+                    class="w-full bg-slate-800 text-slate-100 text-xs rounded-lg pl-8 pr-3 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-[10px]"></i>
+            </div>
+
             <!-- Filtros Rápidos -->
-            <div class="flex items-center gap-2" id="filterContainer">
-                <span class="text-slate-400 font-medium mr-1">Filtrar por Deporte:</span>
-                <button onclick="filtrarDeporte('Todos')" class="filter-btn active-btn bg-emerald-500 text-slate-950 px-3.5 py-1.5 rounded-lg font-bold transition-all">Todos</button>
-                <button onclick="filtrarDeporte('Fútbol')" class="filter-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-semibold transition-all">Fútbol</button>
-                <button onclick="filtrarDeporte('NBA')" class="filter-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3.5 py-1.5 rounded-lg font-semibold transition-all">NBA</button>
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0" id="filterContainer">
+                <span class="text-slate-400 font-medium mr-1 whitespace-nowrap">Filtrar:</span>
+                <button onclick="filtrarDeporte('Todos')" class="filter-btn active-btn bg-emerald-500 text-slate-950 px-3 py-1 rounded-lg font-bold transition-all whitespace-nowrap">Todos</button>
+                <button onclick="filtrarDeporte('Fútbol')" class="filter-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1 rounded-lg font-semibold transition-all whitespace-nowrap">Fútbol</button>
+                <button onclick="filtrarDeporte('NBA')" class="filter-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1 rounded-lg font-semibold transition-all whitespace-nowrap">NBA</button>
             </div>
         </div>
     </div>
 
     <!-- HERO SOBRIO -->
-    <section class="bg-slate-900/40 py-10 border-b border-slate-800/60">
+    <section class="bg-slate-900/40 py-6 sm:py-10 border-b border-slate-800/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl">
-                <span class="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-3">
+                <span class="inline-block px-3 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2">
                     Plataforma de Análisis Estadístico
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight leading-snug">
+                <h2 class="text-xl sm:text-4xl font-extrabold text-slate-100 tracking-tight leading-snug">
                     Información clara y datos objetivos para tus decisiones deportivas
                 </h2>
-                <p class="mt-3 text-base text-slate-400 leading-relaxed">
+                <p class="mt-2 sm:mt-3 text-xs sm:text-base text-slate-400 leading-relaxed">
                     Accede a análisis estructurados en una sola línea, nivel de confianza y desglose detallado para los partidos de hoy.
                 </p>
             </div>
@@ -117,80 +124,80 @@
     </section>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-10 sm:space-y-16">
 
         <!-- MEJORES ANÁLISIS (Sección Principal) -->
-        <section id="analisis-section" class="scroll-mt-24">
-            <div class="mb-6 pb-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <section id="analisis-section" class="scroll-mt-20">
+            <div class="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-100 flex items-center gap-2.5">
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-100 flex items-center gap-2">
                         <i class="fa-solid fa-chart-line text-emerald-400"></i>
                         Mejores Análisis y Pronósticos
                     </h3>
-                    <p class="text-xs text-slate-400 mt-1">Conclusión en 1 línea, cuotas implícitas y nivel de certeza</p>
+                    <p class="text-xs text-slate-400 mt-0.5">Conclusión en 1 línea, cuotas implícitas y nivel de certeza</p>
                 </div>
-                <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 font-medium self-start sm:self-auto">
+                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700 font-medium self-start sm:self-auto">
                     5 Encuentros Disponibles
                 </span>
             </div>
 
             <!-- GRID DE ANÁLISIS (RENDERIZADO POR JS) -->
-            <div id="analisisGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div id="analisisGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <!-- Se llena automáticamente -->
             </div>
         </section>
 
         <!-- AGENDA DE PARTIDOS -->
-        <section id="agenda-section" class="scroll-mt-24">
-            <div class="mb-6 pb-4 border-b border-slate-800">
-                <h3 class="text-2xl font-bold text-slate-100 flex items-center gap-2.5">
+        <section id="agenda-section" class="scroll-mt-20">
+            <div class="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-800">
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-100 flex items-center gap-2">
                     <i class="fa-regular fa-calendar-check text-emerald-400"></i>
                     Agenda de Partidos de Hoy (5 Nov 2026)
                 </h3>
-                <p class="text-xs text-slate-400 mt-1">Horarios y accesos directos por disciplina</p>
+                <p class="text-xs text-slate-400 mt-0.5">Horarios y accesos directos por disciplina</p>
             </div>
 
             <!-- AGENDA GRID (RENDERIZADO POR JS) -->
-            <div id="agendaGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div id="agendaGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                 <!-- Se llena automáticamente -->
             </div>
         </section>
 
         <!-- SECCIÓN DE NOTICIAS -->
-        <section id="noticias-section" class="scroll-mt-24">
-            <div class="mb-6 pb-4 border-b border-slate-800">
-                <h3 class="text-2xl font-bold text-slate-100 flex items-center gap-2.5">
+        <section id="noticias-section" class="scroll-mt-20">
+            <div class="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-800">
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-100 flex items-center gap-2">
                     <i class="fa-regular fa-newspaper text-emerald-400"></i>
                     Noticias y Novedades de Última Hora
                 </h3>
-                <p class="text-xs text-slate-400 mt-1">Reportes médicos, bajas confirmadas y factores tácticos</p>
+                <p class="text-xs text-slate-400 mt-0.5">Reportes médicos, bajas confirmadas y factores tácticos</p>
             </div>
 
             <!-- NOTICIAS GRID (RENDERIZADO POR JS) -->
-            <div id="noticiasGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div id="noticiasGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                 <!-- Se llena automáticamente -->
             </div>
         </section>
 
         <!-- FORMULARIO DE PUBLICACIÓN -->
-        <section id="publicar-section" class="scroll-mt-24 bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8">
+        <section id="publicar-section" class="scroll-mt-20 bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-8">
             <div class="max-w-2xl">
-                <h3 class="text-xl font-bold text-slate-100 flex items-center gap-2 mb-1">
+                <h3 class="text-lg sm:text-xl font-bold text-slate-100 flex items-center gap-2 mb-1">
                     <i class="fa-solid fa-pen-to-square text-emerald-400"></i>
                     Publicar un Nuevo Análisis
                 </h3>
-                <p class="text-xs text-slate-400 mb-6">Agrega tus datos o pronóstico para compartirlo inmediatamente con la comunidad.</p>
+                <p class="text-xs text-slate-400 mb-4 sm:mb-6">Agrega tus datos o pronóstico para compartirlo inmediatamente con la comunidad.</p>
 
                 <form id="nuevoAnalisisForm" onsubmit="agregarNuevoAnalisis(event)" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Partido / Evento</label>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Partido / Evento</label>
                             <input type="text" id="formPartido" required placeholder="Ej. Boston Celtics vs Lakers" 
-                                class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                                class="w-full bg-slate-800 text-slate-100 text-xs sm:text-sm rounded-xl p-2.5 sm:p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Deporte</label>
-                            <select id="formDeporte" class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Deporte</label>
+                            <select id="formDeporte" class="w-full bg-slate-800 text-slate-100 text-xs sm:text-sm rounded-xl p-2.5 sm:p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
                                 <option value="NBA">NBA</option>
                                 <option value="Fútbol">Fútbol</option>
                                 <option value="Tenis">Tenis</option>
@@ -198,20 +205,20 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Liga / Competición</label>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Liga / Competición</label>
                             <input type="text" id="formLiga" required placeholder="Ej. NBA / UEFA" 
-                                class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                                class="w-full bg-slate-800 text-slate-100 text-xs sm:text-sm rounded-xl p-2.5 sm:p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Cuota Sugerida</label>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Cuota Sugerida</label>
                             <input type="text" id="formCuota" required placeholder="Ej. 1.85" 
-                                class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                                class="w-full bg-slate-800 text-slate-100 text-xs sm:text-sm rounded-xl p-2.5 sm:p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nivel Confianza (1 a 5)</label>
-                            <select id="formConfianza" class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Nivel Confianza (1 a 5)</label>
+                            <select id="formConfianza" class="w-full bg-slate-800 text-slate-100 text-xs sm:text-sm rounded-xl p-2.5 sm:p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
                                 <option value="5">5/5 - Excelente</option>
                                 <option value="4" selected>4/5 - Alto</option>
                                 <option value="3">3/5 - Medio</option>
@@ -221,18 +228,18 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Conclusión Directa (1 línea)</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Conclusión Directa (1 línea)</label>
                         <input type="text" id="formConclusion" required placeholder="Ej. Victoria de Boston Celtics por más de 5 puntos" 
-                            class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
+                            class="w-full bg-slate-800 text-slate-100 text-xs sm:text-sm rounded-xl p-2.5 sm:p-3 border border-slate-700 focus:outline-none focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Desarrollo y Factores de Riesgo</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Desarrollo y Factores de Riesgo</label>
                         <textarea id="formDesarrollo" rows="3" required placeholder="Escribe aquí las razones clave del pronóstico..." 
-                            class="w-full bg-slate-800 text-slate-100 text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:border-emerald-500"></textarea>
+                            class="w-full bg-slate-800 text-slate-100 text-xs sm:text-sm rounded-xl p-2.5 sm:p-3 border border-slate-700 focus:outline-none focus:border-emerald-500"></textarea>
                     </div>
 
-                    <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-lg shadow-emerald-500/20">
+                    <button type="submit" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/20">
                         Publicar Análisis Ahora
                     </button>
                 </form>
@@ -242,10 +249,10 @@
     </main>
 
     <!-- FOOTER SOBRIO -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-8 text-slate-400 text-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950 font-black">SA</div>
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 sm:py-8 text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950 font-black text-xs">SA</div>
                 <span class="font-bold text-slate-200 text-sm">SportAnalytics</span>
             </div>
             <p>Plataforma diseñada aplicando principios de usabilidad UX (Steve Krug).</p>
@@ -364,36 +371,36 @@
                     : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
 
                 grid.innerHTML += `
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all flex flex-col justify-between">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 hover:border-slate-700 transition-all flex flex-col justify-between">
                         <div>
                             <!-- Header de la tarjeta -->
                             <div class="flex items-center justify-between gap-2 mb-3">
                                 <span class="px-2.5 py-1 rounded-md text-[11px] font-bold border ${badgeColor}">
                                     ${item.deporte} • ${item.liga}
                                 </span>
-                                <span class="text-xs text-slate-400 font-medium">
+                                <span class="text-[11px] sm:text-xs text-slate-400 font-medium">
                                     <i class="fa-regular fa-clock mr-1"></i>${item.fecha}
                                 </span>
                             </div>
 
                             <!-- Título del Encuentro -->
-                            <h4 class="text-lg font-bold text-slate-100 mb-2">${item.partido}</h4>
+                            <h4 class="text-base sm:text-lg font-bold text-slate-100 mb-2">${item.partido}</h4>
 
                             <!-- Resumen Ejecutiva (1 línea - Krug) -->
                             <div class="bg-slate-800/90 border border-slate-700/60 rounded-xl p-3 mb-4">
-                                <div class="text-[11px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Pronóstico Recomendado</div>
-                                <div class="text-sm font-bold text-emerald-400">${item.conclusion}</div>
+                                <div class="text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Pronóstico Recomendado</div>
+                                <div class="text-xs sm:text-sm font-bold text-emerald-400">${item.conclusion}</div>
                             </div>
 
                             <!-- Métricas Rápidas -->
-                            <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
-                                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                                    <span class="text-slate-400 block mb-0.5">Cuota Sugerida:</span>
-                                    <span class="font-extrabold text-slate-100 text-sm">${item.cuota}</span>
+                            <div class="grid grid-cols-2 gap-2 sm:gap-3 mb-4 text-xs">
+                                <div class="bg-slate-950 p-2 sm:p-2.5 rounded-lg border border-slate-800">
+                                    <span class="text-slate-400 block mb-0.5 text-[11px]">Cuota Sugerida:</span>
+                                    <span class="font-extrabold text-slate-100 text-xs sm:text-sm">${item.cuota}</span>
                                 </div>
-                                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                                    <span class="text-slate-400 block mb-0.5">Confianza:</span>
-                                    <div class="flex items-center gap-1 text-xs">${estrellas}</div>
+                                <div class="bg-slate-950 p-2 sm:p-2.5 rounded-lg border border-slate-800">
+                                    <span class="text-slate-400 block mb-0.5 text-[11px]">Confianza:</span>
+                                    <div class="flex items-center gap-1 text-[10px] sm:text-xs">${estrellas}</div>
                                 </div>
                             </div>
 
@@ -413,13 +420,13 @@
 
                 // Renderizar Agenda
                 agendaGrid.innerHTML += `
-                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex items-center justify-between">
+                    <div class="bg-slate-900 border border-slate-800 p-3 sm:p-4 rounded-xl flex items-center justify-between gap-2">
                         <div>
                             <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">${item.deporte}</span>
                             <h5 class="text-xs font-bold text-slate-100 mt-0.5">${item.partido}</h5>
-                            <span class="text-[11px] text-slate-400">${item.fecha}</span>
+                            <span class="text-[10px] sm:text-[11px] text-slate-400">${item.fecha}</span>
                         </div>
-                        <a href="#analisis-section" class="text-xs bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-300 font-bold px-3 py-2 rounded-lg transition-colors border border-slate-700">
+                        <a href="#analisis-section" class="text-xs bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-300 font-bold px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors border border-slate-700">
                             Ver
                         </a>
                     </div>
@@ -429,16 +436,16 @@
             // Renderizar Noticias
             datosNoticias.forEach(noticia => {
                 noticiasGrid.innerHTML += `
-                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+                    <div class="bg-slate-900 border border-slate-800 p-4 sm:p-5 rounded-2xl flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
-                                <span class="text-emerald-400 font-semibold">${noticia.categoria}</span>
-                                <span>${noticia.fecha}</span>
+                                <span class="text-emerald-400 font-semibold text-[11px]">${noticia.categoria}</span>
+                                <span class="text-[11px]">${noticia.fecha}</span>
                             </div>
-                            <h4 class="text-sm font-bold text-slate-100 mb-2 leading-snug">${noticia.titulo}</h4>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-100 mb-1.5 leading-snug">${noticia.titulo}</h4>
                             <p class="text-xs text-slate-400 leading-relaxed">${noticia.resumen}</p>
                         </div>
-                        <span class="inline-block mt-4 text-xs font-semibold text-emerald-400 cursor-pointer hover:underline">Leer más &rarr;</span>
+                        <span class="inline-block mt-3 text-xs font-semibold text-emerald-400 cursor-pointer hover:underline">Leer más &rarr;</span>
                     </div>
                 `;
             });
@@ -475,6 +482,16 @@
         // BUSCADOR EN TIEMPO REAL
         function filtrarPorBusqueda() {
             const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtrados = datosAnalisis.filter(a => 
+                a.partido.toLowerCase().includes(query) || 
+                a.deporte.toLowerCase().includes(query) ||
+                a.liga.toLowerCase().includes(query)
+            );
+            renderizarTodo(filtrados);
+        }
+
+        function filtrarPorBusquedaMovil() {
+            const query = document.getElementById('searchInputMobile').value.toLowerCase();
             const filtrados = datosAnalisis.filter(a => 
                 a.partido.toLowerCase().includes(query) || 
                 a.deporte.toLowerCase().includes(query) ||
