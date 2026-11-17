@@ -131,14 +131,6 @@
                     class="w-full bg-zinc-900 text-slate-100 text-xs rounded-lg pl-8 pr-3 py-1.5 border border-zinc-800 focus:outline-none focus:border-brand-purple">
                 <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-zinc-500 text-[10px]"></i>
             </div>
-
-            <!-- Botones Filtro -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0" id="filterContainer">
-                <span class="text-zinc-500 font-medium mr-1 whitespace-nowrap">Filtrar:</span>
-                <button onclick="filtrarDeporte('Todos')" class="filter-btn active-btn bg-brand-purple text-white px-3 py-1 rounded-lg font-bold transition-all whitespace-nowrap">Todos</button>
-                <button onclick="filtrarDeporte('NBA')" class="filter-btn bg-zinc-900 text-zinc-300 hover:bg-zinc-800 px-3 py-1 rounded-lg font-semibold transition-all whitespace-nowrap">NBA</button>
-                <button onclick="filtrarDeporte('Fútbol')" class="filter-btn bg-zinc-900 text-zinc-300 hover:bg-zinc-800 px-3 py-1 rounded-lg font-semibold transition-all whitespace-nowrap">Fútbol</button>
-            </div>
         </div>
     </div>
 
@@ -418,80 +410,11 @@
     </div>
 
     <!-- JAVASCRIPT LÓGICA Y ESTADO -->
-    <script>
+    <script type="module">
         // CREDENCIALES DE ADMINISTRADOR
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "sport123";
         let esAdmin = false;
-
-        // DATOS INICIALES PRECARGADOS
-        const analisisPredeterminados = [
-            {
-                id: 101,
-                deporte: "NBA",
-                partido: "Phoenix Suns vs. Orlando Magic",
-                liga: "NBA - Temporada Regular",
-                fecha: "5 Nov 2026 - 20:00 CDMX",
-                conclusion: "Victoria de Phoenix Suns (Línea de Dinero)",
-                cuota: "1.72",
-                confianza: 4,
-                desarrollo: "Phoenix mantiene una eficiencia ofensiva destacada jugando en el Footprint Center. La defensa perimetral de Magic suele resentirse en giras por la Conferencia Oeste.",
-                factores: "Alta efectividad en tiros tras pantalla y rotación interior sólida.",
-                riesgo: "Dominio de rebotes por parte de Orlando si imponen ritmo lento."
-            },
-            {
-                id: 102,
-                deporte: "NBA",
-                partido: "Golden State Warriors vs. Miami Heat",
-                liga: "NBA - Temporada Regular",
-                fecha: "5 Nov 2026 - 21:00 CDMX",
-                conclusion: "Altas / Over (+220.5 Puntos Totales)",
-                cuota: "1.90",
-                confianza: 3,
-                desarrollo: "Ambas escuadras han incrementado el ritmo de posesión (Pace) en sus últimos cinco juegos en el Chase Center.",
-                factores: "Volumen elevado de lanzamientos de tres puntos por ambos costados.",
-                riesgo: "Defensa física de Miami en media cancha en la segunda mitad."
-            },
-            {
-                id: 103,
-                deporte: "Fútbol",
-                partido: "Real Sociedad vs. Lyon",
-                liga: "UEFA Europa League",
-                fecha: "5 Nov 2026 - 18:45 CET",
-                conclusion: "Ambos Equipos Anotan (Sí)",
-                cuota: "1.80",
-                confianza: 4,
-                desarrollo: "La Real Sociedad propone líneas altas en Anoeta, generando contragolpes. Lyon promedia 1.8 goles como visitante en competencias internacionales.",
-                factores: "Racha goleadora de los delanteros titulares de ambos equipos.",
-                riesgo: "Baja conversión de jugadas de peligro en la primera parte."
-            },
-            {
-                id: 104,
-                deporte: "Fútbol",
-                partido: "AC Milan vs. Ferencváros",
-                liga: "UEFA Europa League",
-                fecha: "5 Nov 2026 - 18:45 CET",
-                conclusion: "AC Milan -1.5 Hándicap Asiático",
-                cuota: "1.85",
-                confianza: 5,
-                desarrollo: "El cuadro Rossonero requiere amarrar la diferencia de goles en San Siro ante un rival con falencias defensivas marcadas en saques de esquina.",
-                factores: "Dominio territorial e historial invicto en San Siro este año.",
-                riesgo: "Rotaciones tempranas pensando en el duelo de liga del fin de semana."
-            },
-            {
-                id: 105,
-                deporte: "Fútbol",
-                partido: "AZ Alkmaar vs. Juventus",
-                liga: "UEFA Europa League",
-                fecha: "5 Nov 2026 - 21:00 CET",
-                conclusion: "Victoria de Juventus / Menos de 3.5 Goles",
-                cuota: "2.10",
-                confianza: 3,
-                desarrollo: "Juventus estructura un bloque bajo ordenado para controlar los partidos de visita, priorizando el resultado mínimo.",
-                factores: "Solidez del sistema defensivo y efectividad a balón parado.",
-                riesgo: "Gol tempranero del conjunto local que fuerce un trámite idas y vueltas."
-            }
-        ];
 
         const noticiasPredeterminadas = [
             {
@@ -514,19 +437,67 @@
             }
         ];
 
-        // OBTENER O INICIALIZAR DATOS EN LOCALSTORAGE
-        function obtenerAnalisis() {
-            const guardados = localStorage.getItem('sportanalytics_datos');
-            if (guardados) {
-                return JSON.parse(guardados);
-            } else {
-                localStorage.setItem('sportanalytics_datos', JSON.stringify(analisisPredeterminados));
-                return analisisPredeterminados;
-            }
+        // DATOS DESDE SUPABASE (tabla "analisis")
+        // js/supabase.js se carga solo cuando se necesita; si falla, el resto de la página sigue funcionando
+        let apiPromise = null;
+        function obtenerApi() {
+            if (!apiPromise) apiPromise = import('./js/supabase.js');
+            return apiPromise;
+        }
+        let analisisCache = [];
+        let cargando = true;
+
+        // Fila de la base de datos -> objeto que usa la interfaz
+        function filaAAnalisis(r) {
+            return {
+                id: r.id,
+                deporte: r.deporte,
+                liga: r.liga || r.deporte,
+                partido: r.partido || r.titulo,
+                fecha: r.fecha || new Date(r.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' }),
+                conclusion: r.pronostico || '',
+                cuota: r.cuota || '-',
+                confianza: r.confianza ?? 3,
+                desarrollo: r.contenido || '',
+                factores: r.factores || '',
+                riesgo: r.riesgo || ''
+            };
         }
 
-        function guardarAnalisisEnStorage(datos) {
-            localStorage.setItem('sportanalytics_datos', JSON.stringify(datos));
+        // Objeto de la interfaz -> fila para guardar en la base de datos
+        function analisisAFila(a) {
+            return {
+                titulo: a.partido,
+                partido: a.partido,
+                deporte: a.deporte,
+                liga: a.liga,
+                fecha: a.fecha,
+                pronostico: a.conclusion,
+                cuota: a.cuota,
+                confianza: a.confianza,
+                contenido: a.desarrollo,
+                factores: a.factores,
+                riesgo: a.riesgo
+            };
+        }
+
+        function obtenerAnalisis() {
+            return analisisCache;
+        }
+
+        // READ: consulta los datos en tiempo real desde Supabase y vuelve a dibujar la página
+        async function cargarAnalisis() {
+            try {
+                const api = await obtenerApi();
+                const filas = await api.leerAnalisis();
+                analisisCache = filas.map(filaAAnalisis);
+            } catch (err) {
+                console.error('Error al leer de Supabase:', err);
+                mostrarToast('No se pudo conectar con Supabase. Abre la página con Live Server');
+            } finally {
+                cargando = false;
+                renderizarTodo();
+            }
         }
 
         // CONTROL DEL ESTADO DE ADMINISTRADOR
@@ -615,13 +586,13 @@
 
             // Mensajes cuando no hay registros
             if (nbaItems.length === 0) {
-                nbaGrid.innerHTML = `<div class="col-span-full py-8 text-center text-zinc-500 text-xs">No hay análisis de NBA disponibles.</div>`;
+                nbaGrid.innerHTML = `<div class="col-span-full py-8 text-center text-zinc-500 text-xs">${cargando ? 'Cargando análisis desde Supabase...' : 'No hay análisis de NBA disponibles.'}</div>`;
             } else {
                 nbaItems.forEach(item => nbaGrid.appendChild(crearTarjetaAnalisis(item)));
             }
 
             if (futbolItems.length === 0) {
-                futbolGrid.innerHTML = `<div class="col-span-full py-8 text-center text-zinc-500 text-xs">No hay análisis de Fútbol disponibles.</div>`;
+                futbolGrid.innerHTML = `<div class="col-span-full py-8 text-center text-zinc-500 text-xs">${cargando ? 'Cargando análisis desde Supabase...' : 'No hay análisis de Fútbol disponibles.'}</div>`;
             } else {
                 futbolItems.forEach(item => futbolGrid.appendChild(crearTarjetaAnalisis(item)));
             }
@@ -753,15 +724,13 @@
         }
 
         // ACCIONES DEL PANEL ADMINISTRADOR
-        function guardarAnalisisAdmin(e) {
+        async function guardarAnalisisAdmin(e) {
             e.preventDefault();
             if (!esAdmin) return;
 
-            const editIndex = parseInt(document.getElementById('editIndex').value);
-            const lista = obtenerAnalisis();
+            const editId = parseInt(document.getElementById('editIndex').value);
 
-            const nuevoItem = {
-                id: editIndex >= 0 ? editIndex : Date.now(),
+            const item = {
                 deporte: document.getElementById('formDeporte').value,
                 liga: document.getElementById('formLiga').value,
                 partido: document.getElementById('formPartido').value,
@@ -774,18 +743,22 @@
                 riesgo: document.getElementById('formRiesgo').value
             };
 
-            if (editIndex >= 0) {
-                const index = lista.findIndex(a => a.id === editIndex);
-                if (index !== -1) lista[index] = nuevoItem;
-                mostrarToast("Análisis actualizado correctamente");
-            } else {
-                lista.unshift(nuevoItem);
-                mostrarToast("Nuevo análisis publicado correctamente");
+            try {
+                if (editId >= 0) {
+                    const api = await obtenerApi();
+                    await api.actualizarAnalisis(editId, analisisAFila(item));   // UPDATE
+                    mostrarToast("Análisis actualizado correctamente");
+                } else {
+                    const api = await obtenerApi();
+                    await api.crearAnalisis(analisisAFila(item));                // CREATE
+                    mostrarToast("Nuevo análisis publicado correctamente");
+                }
+                resetearFormularioAdmin();
+                await cargarAnalisis();                                      // READ
+            } catch (err) {
+                console.error('Error al guardar en Supabase:', err);
+                mostrarToast("Error al guardar en Supabase");
             }
-
-            guardarAnalisisEnStorage(lista);
-            resetearFormularioAdmin();
-            renderizarTodo();
         }
 
         function prepararEditar(id) {
@@ -825,14 +798,18 @@
             document.getElementById('btnCancelEdit').classList.add('hidden');
         }
 
-        function eliminarAnalisis(id) {
+        async function eliminarAnalisis(id) {
             if (!esAdmin) return;
             if (confirm("¿Estás seguro de que deseas eliminar este análisis deportivo? Esta acción no se puede deshacer.")) {
-                let lista = obtenerAnalisis();
-                lista = lista.filter(a => a.id !== id);
-                guardarAnalisisEnStorage(lista);
-                renderizarTodo();
-                mostrarToast("Análisis eliminado con éxito");
+                try {
+                    const api = await obtenerApi();
+                    await api.borrarAnalisis(id);                                // DELETE
+                    await cargarAnalisis();                                  // READ
+                    mostrarToast("Análisis eliminado con éxito");
+                } catch (err) {
+                    console.error('Error al borrar en Supabase:', err);
+                    mostrarToast("Error al eliminar en Supabase");
+                }
             }
         }
 
@@ -840,24 +817,6 @@
         function toggleAccordion(id) {
             const el = document.getElementById(`body-${id}`);
             el.classList.toggle('active');
-        }
-
-        function filtrarDeporte(deporte) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-purple', 'text-white', 'active-btn');
-                btn.classList.add('bg-zinc-900', 'text-zinc-300');
-            });
-
-            event.target.classList.remove('bg-zinc-900', 'text-zinc-300');
-            event.target.classList.add('bg-brand-purple', 'text-white', 'active-btn');
-
-            const lista = obtenerAnalisis();
-            if (deporte === 'Todos') {
-                renderizarTodo(lista);
-            } else {
-                const filtrados = lista.filter(a => a.deporte === deporte);
-                renderizarTodo(filtrados);
-            }
         }
 
         function filtrarPorBusqueda() {
@@ -894,6 +853,14 @@
         // INICIALIZACIÓN
         document.addEventListener('DOMContentLoaded', () => {
             verificarSesionAdmin();
+            cargarAnalisis();
+        });
+
+        // Al ser un módulo, las funciones usadas en onclick/onsubmit se exponen en window
+        Object.assign(window, {
+            abrirModalLogin, cerrarModalLogin, autenticarAdmin, cerrarSesionAdmin,
+            guardarAnalisisAdmin, prepararEditar, cancelarEdicion, eliminarAnalisis,
+            toggleAccordion, filtrarPorBusqueda, filtrarPorBusquedaMovil
         });
     </script>
 </body>
