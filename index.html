@@ -101,7 +101,6 @@
                     <a href="#nba-section" class="hidden sm:inline text-zinc-300 hover:text-brand-purple transition-colors">NBA</a>
                     <a href="#futbol-section" class="hidden sm:inline text-zinc-300 hover:text-brand-purple transition-colors">Fútbol</a>
                     <a href="#agenda-section" class="hidden sm:inline text-zinc-300 hover:text-brand-purple transition-colors">Agenda</a>
-                    <a href="#noticias-section" class="hidden sm:inline text-zinc-300 hover:text-brand-purple transition-colors">Noticias</a>
                     
                     <!-- Botón Dinámico del Panel Admin -->
                     <div id="adminHeaderBtn">
@@ -277,6 +276,21 @@
                     </button>
                 </div>
             </form>
+
+            <div class="mt-8 pt-6 border-t border-zinc-800 max-w-xl">
+                <!-- Publicar en agenda -->
+                <form id="agendaForm" onsubmit="guardarAgenda(event)" class="space-y-3">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-calendar-days text-brand-purple"></i> Publicar en la agenda</h4>
+                    <select id="agendaDeporte" class="w-full bg-zinc-900 text-white text-xs sm:text-sm rounded-xl p-3 border border-zinc-800 focus:outline-none focus:border-brand-purple">
+                        <option value="NBA">NBA</option>
+                        <option value="Fútbol">Fútbol</option>
+                    </select>
+                    <input type="text" id="agendaPartido" required placeholder="Partido (ej. Lakers vs. Celtics)" class="w-full bg-zinc-900 text-white text-xs sm:text-sm rounded-xl p-3 border border-zinc-800 focus:outline-none focus:border-brand-purple">
+                    <input type="text" id="agendaFecha" required placeholder="Fecha y hora (ej. 17 Nov 2026 - 20:00)" class="w-full bg-zinc-900 text-white text-xs sm:text-sm rounded-xl p-3 border border-zinc-800 focus:outline-none focus:border-brand-purple">
+                    <input type="text" id="agendaCuota" required placeholder="Cuota (ej. 1.85)" class="w-full bg-zinc-900 text-white text-xs sm:text-sm rounded-xl p-3 border border-zinc-800 focus:outline-none focus:border-brand-purple">
+                    <button type="submit" class="bg-brand-purple hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl text-xs sm:text-sm transition-all shadow-lg flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Publicar en agenda</button>
+                </form>
+            </div>
         </section>
 
         <!-- SECCIÓN NBA (BALONCESTO) -->
@@ -346,21 +360,6 @@
             </div>
         </section>
 
-        <!-- SECCIÓN DE NOTICIAS -->
-        <section id="noticias-section" class="scroll-mt-24">
-            <div class="mb-6 pb-3 border-b border-zinc-800">
-                <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fa-regular fa-newspaper text-brand-purple"></i>
-                    Noticias y Reportes de Última Hora
-                </h3>
-                <p class="text-xs text-zinc-400 mt-0.5">Informes médicos, rotaciones tácticas y novedades informativas</p>
-            </div>
-
-            <div id="noticiasGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- JS Populated -->
-            </div>
-        </section>
-
     </main>
 
     <!-- FOOTER ELEGANTE -->
@@ -416,27 +415,6 @@
         const ADMIN_PASS = "sport123";
         let esAdmin = false;
 
-        const noticiasPredeterminadas = [
-            {
-                titulo: "Reporte de Lesiones NBA: Alineaciones Confirmadas",
-                categoria: "NBA",
-                fecha: "5 Nov 2026",
-                resumen: "Revisa los reportes médicos finales y las bajas de última hora para la jornada nocturna de la NBA."
-            },
-            {
-                titulo: "Jornada Decisiva en Torneos UEFA",
-                categoria: "Fútbol",
-                fecha: "5 Nov 2026",
-                resumen: "Análisis táctico de los enfrentamientos europeos donde AC Milan y Juventus buscan afianzar sus liderazgos."
-            },
-            {
-                titulo: "Condiciones de Terreno en San Sebastián",
-                categoria: "Fútbol",
-                fecha: "5 Nov 2026",
-                resumen: "El césped rápido de Anoeta tras lluvias favorecerá el juego dinámico entre Real Sociedad y Lyon."
-            }
-        ];
-
         // DATOS DESDE SUPABASE (tabla "analisis")
         // js/supabase.js se carga solo cuando se necesita; si falla, el resto de la página sigue funcionando
         let apiPromise = null;
@@ -483,6 +461,59 @@
 
         function obtenerAnalisis() {
             return analisisCache;
+        }
+
+        // ---- Agenda (tabla "agenda") ----
+        let agendaCache = [];
+        let cargandoAgenda = true;
+
+        async function dbLeer(tabla) {
+            const { supabase } = await obtenerApi();
+            const { data, error } = await supabase.from(tabla).select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            return data;
+        }
+        async function dbCrear(tabla, fila) {
+            const { supabase } = await obtenerApi();
+            const { error } = await supabase.from(tabla).insert(fila);
+            if (error) throw error;
+        }
+        async function dbBorrar(tabla, id) {
+            const { supabase } = await obtenerApi();
+            const { error } = await supabase.from(tabla).delete().eq('id', id);
+            if (error) throw error;
+        }
+
+        async function cargarAgenda() {
+            try { agendaCache = await dbLeer('agenda'); }
+            catch (err) { console.error('Error al leer agenda:', err); mostrarToast('No se pudo cargar la agenda (¿ya ejecutaste el SQL?)'); }
+            finally { cargandoAgenda = false; renderizarTodo(); }
+        }
+
+        async function guardarAgenda(e) {
+            e.preventDefault();
+            if (!esAdmin) return;
+            try {
+                await dbCrear('agenda', {
+                    deporte: document.getElementById('agendaDeporte').value,
+                    partido: document.getElementById('agendaPartido').value,
+                    fecha: document.getElementById('agendaFecha').value,
+                    cuota: document.getElementById('agendaCuota').value
+                });
+                document.getElementById('agendaForm').reset();
+                await cargarAgenda();
+                mostrarToast("Partido agregado a la agenda");
+            } catch (err) {
+                console.error(err);
+                mostrarToast("Error al publicar en la agenda");
+            }
+        }
+        async function eliminarAgenda(id) {
+            if (!esAdmin) return;
+            if (confirm("¿Quitar este partido de la agenda?")) {
+                try { await dbBorrar('agenda', id); await cargarAgenda(); mostrarToast("Partido eliminado de la agenda"); }
+                catch (err) { console.error(err); mostrarToast("Error al eliminar de la agenda"); }
+            }
         }
 
         // READ: consulta los datos en tiempo real desde Supabase y vuelve a dibujar la página
@@ -572,12 +603,10 @@
             const nbaGrid = document.getElementById('nbaGrid');
             const futbolGrid = document.getElementById('futbolGrid');
             const agendaGrid = document.getElementById('agendaGrid');
-            const noticiasGrid = document.getElementById('noticiasGrid');
 
             nbaGrid.innerHTML = '';
             futbolGrid.innerHTML = '';
             agendaGrid.innerHTML = '';
-            noticiasGrid.innerHTML = '';
 
             document.getElementById('totalAnalisisCount').innerText = analisis.length;
 
@@ -597,41 +626,28 @@
                 futbolItems.forEach(item => futbolGrid.appendChild(crearTarjetaAnalisis(item)));
             }
 
-            // Render Agenda
-            analisis.forEach(item => {
+            // Render Agenda (desde Supabase)
+            if (agendaCache.length === 0) {
+                agendaGrid.innerHTML = `<div class="text-xs text-zinc-500 py-3">${cargandoAgenda ? 'Cargando agenda desde Supabase...' : 'No hay partidos en la agenda.'}</div>`;
+            }
+            agendaCache.forEach(item => {
                 const cardAgenda = document.createElement('div');
                 cardAgenda.className = "bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex items-center justify-between gap-3 hover:border-zinc-700 transition-colors";
                 cardAgenda.innerHTML = `
                     <div>
                         <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded ${item.deporte === 'NBA' ? 'bg-amber-500/20 text-brand-orange' : 'bg-blue-500/20 text-blue-400'}">${item.deporte}</span>
                         <h5 class="text-xs font-bold text-white mt-1 leading-snug">${item.partido}</h5>
-                        <span class="text-[11px] text-zinc-400">${item.fecha}</span>
+                        <span class="text-[11px] text-zinc-400">${item.fecha || ''}</span>
                     </div>
                     <div class="text-right">
-                        <span class="block text-xs font-black text-brand-neon">${item.cuota}</span>
+                        <span class="block text-xs font-black text-brand-neon">${item.cuota || '-'}</span>
                         <span class="text-[10px] text-zinc-500 font-semibold">Cuota</span>
+                        ${esAdmin ? `<button onclick="eliminarAgenda(${item.id})" class="mt-1 text-[10px] font-bold text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i> Eliminar</button>` : ''}
                     </div>
                 `;
                 agendaGrid.appendChild(cardAgenda);
             });
 
-            // Render Noticias
-            noticiasPredeterminadas.forEach(noticia => {
-                const cardNoticia = document.createElement('div');
-                cardNoticia.className = "bg-zinc-900 border border-zinc-800 p-5 rounded-2xl flex flex-col justify-between hover:border-zinc-700 transition-colors";
-                cardNoticia.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between text-xs text-zinc-400 mb-2">
-                            <span class="text-brand-purple font-bold text-[11px]">${noticia.categoria}</span>
-                            <span class="text-[11px]">${noticia.fecha}</span>
-                        </div>
-                        <h4 class="text-sm font-bold text-white mb-2 leading-snug">${noticia.titulo}</h4>
-                        <p class="text-xs text-zinc-400 leading-relaxed">${noticia.resumen}</p>
-                    </div>
-                    <span class="inline-block mt-4 text-xs font-bold text-brand-purple hover:underline cursor-pointer">Leer reporte completo &rarr;</span>
-                `;
-                noticiasGrid.appendChild(cardNoticia);
-            });
         }
 
         // CREACIÓN DE TARJETAS DE ANÁLISIS
@@ -854,13 +870,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             verificarSesionAdmin();
             cargarAnalisis();
+            cargarAgenda();
         });
 
         // Al ser un módulo, las funciones usadas en onclick/onsubmit se exponen en window
         Object.assign(window, {
             abrirModalLogin, cerrarModalLogin, autenticarAdmin, cerrarSesionAdmin,
             guardarAnalisisAdmin, prepararEditar, cancelarEdicion, eliminarAnalisis,
-            toggleAccordion, filtrarPorBusqueda, filtrarPorBusquedaMovil
+            toggleAccordion, filtrarPorBusqueda, filtrarPorBusquedaMovil,
+            guardarAgenda, eliminarAgenda
         });
     </script>
 </body>
